@@ -1,10 +1,5 @@
 # ⚡ Real-Time LiDAR Ground Segmentation on FPGA
 
-[![FPGA](https://img.shields.io/badge/Target-AMD%20Xilinx%20Zynq%20%7C%20UltraScale%2B-red.svg)](#)
-[![HDL](https://img.shields.io/badge/Language-Verilog%20%7C%20SystemVerilog-blue.svg)](#)
-[![Python](https://img.shields.io/badge/Python-3.8%2B-brightgreen.svg)](#)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-orange.svg)](#contributing)
 
 A high-throughput, sub-millisecond perception engine for autonomous navigation. This repository accelerates 3D point cloud ground segmentation on FPGA hardware, stripping millions of terrain points per second to isolate drivable surfaces and potential obstacles at sensor line-rate.
 
