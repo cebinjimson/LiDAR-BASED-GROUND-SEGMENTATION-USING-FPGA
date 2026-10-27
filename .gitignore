@@ -1,0 +1,120 @@
+# ==============================================================================
+# Python & Virtual Environments
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# ==============================================================================
+# Hardware / FPGA / EDA Tools (Vivado, Quartus, ModelSim, Questa)
+# ==============================================================================
+# Vivado logs, journals, and status files
+*.log
+*.jou
+*.str
+*.pb
+*.rpt
+
+# Vivado project caches and run trees
+.Xil/
+*.runs/
+*.cache/
+*.hw/
+*.ip_user_files/
+*.sim/
+
+# Bitstreams and checkpoints (generate these via scripts/makefiles instead)
+*.bit
+*.bin
+*.dcp
+*.ltx
+
+# Simulation waveform files (large trace dumps)
+*.vcd
+*.wdb
+*.fsdb
+*.vpd
+transcript
+vsim.wlf
+
+# Intel Quartus generated folders
+db/
+incremental_db/
+output_files/
+
+# ==============================================================================
+# LiDAR Datasets & Large Point Cloud Binaries
+# ==============================================================================
+# Raw frames, point clouds, and ROS recording bags
+*.bag
+*.pcd
+*.ply
+*.las
+*.laz
+*.xyz
+*.bin
+
+# Local dataset folders (common folder names for datasets)
+data/
+datasets/
+kitti/
+pointclouds/
+
+# ==============================================================================
+# C / C++ Build Artifacts (if compiling driver or testbench code)
+# ==============================================================================
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+*.elf
+
+# ==============================================================================
+# IDEs, Editors & OS Files
+# ==============================================================================
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains / PyCharm
+.idea/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
