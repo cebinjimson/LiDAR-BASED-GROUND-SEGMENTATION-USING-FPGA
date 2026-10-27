@@ -1,30 +1,60 @@
-# Real-Time LiDAR-Based Ground Segmentation on FPGA
+# ⚡ Real-Time LiDAR Ground Segmentation on FPGA
 
-A hardware-accelerated perception pipeline designed to segment raw 3D LiDAR point clouds into ground and non-ground (obstacle) points in real time. By leveraging parallel processing, fixed-point arithmetic, and pipelined streaming architectures on FPGA hardware, this system achieves deterministic low latency and high throughput for autonomous vehicles and robotics applications.
+[![FPGA](https://img.shields.io/badge/Target-AMD%20Xilinx%20Zynq%20%7C%20UltraScale%2B-red.svg)](#)
+[![HDL](https://img.shields.io/badge/Language-Verilog%20%7C%20SystemVerilog-blue.svg)](#)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-brightgreen.svg)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-orange.svg)](#contributing)
 
----
-
-## Overview
-
-LiDAR point clouds contain large volumes of data per frame, with 50% to 70% of points typically representing the road surface. Processing full point clouds on general-purpose CPUs or GPUs can introduce high latency and power overhead. 
-
-This project implements an optimized hardware pipeline that:
-- Filters ground returns to isolate potential obstacles.
-- Extracts drivable surface profiles.
-- Operates at sensor line-rate with low power consumption and microsecond-level latency.
+A high-throughput, sub-millisecond perception engine for autonomous navigation. This repository accelerates 3D point cloud ground segmentation on FPGA hardware, stripping millions of terrain points per second to isolate drivable surfaces and potential obstacles at sensor line-rate.
 
 ---
 
-## Features
+## 🚀 Key Highlights
 
-- **Hardware Acceleration:** Pipelined architecture implemented in Verilog / SystemVerilog.
-- **Fixed-Point Quantization:** Optimized word-length representations to reduce DSP slice usage while preserving sub-centimeter accuracy.
-- **Line Buffer Streaming:** On-chip BRAM buffers to perform local neighborhood operations without stalling for full frame transfers from external memory.
-- **Python Verification & Simulation:** High-level algorithmic reference model, visualization utilities, and automated testbench generation.
+* **Ultra-Low Latency:** Streaming architecture processes data at wire speed via line buffers, delivering **microsecond-level deterministic response** without waiting for complete frame dumps.
+* **Hardware-Optimized Arithmetic:** Implements parameterized fixed-point quantization (Q-format) to slash DSP slice utilization and power draw while preserving sub-centimeter spatial accuracy.
+* **Zero Frame-Buffer Bottlenecks:** Uses on-chip BRAM/URAM circular buffers to perform sliding-window elevation gradient calculations directly on incoming scanlines.
+* **Dual-Track Verification:** End-to-end Python golden model (with 3D visualizers) paired with bit-accurate RTL testbenches to validate algorithm behavior before synthesis.
 
 ---
 
-## System Architecture
+## 📊 Performance at a Glance
+
+| Metric | Target Specification |
+| :--- | :--- |
+| **Input Ingestion** | AXI4-Stream / Raw Sensor Packet Stream |
+| **Throughput** | $\ge$ 50–100 FPS (comfortably exceeds typical 10–20 Hz LiDAR feeds) |
+| **Data Representation** | Quantized Fixed-Point (e.g., Q12.4 / Q16.16) |
+| **Memory Footprint** | Zero external DDR roundtrips during segmentation |
+| **Typical Power Budget** | $\sim$2–10 W (embedded FPGA profile vs. 50–150 W automotive GPUs) |
+
+---
+
+## 🛠 Hardware Pipeline
 
 ```text
-  [Raw LiDAR Data Stream (Ethernet / AXI-Stream)]
+       Raw LiDAR Stream (Ethernet / AXI4-Stream)
+                          │
+                          ▼
+        ┌───────────────────────────────────┐
+        │   Coordinate Projection & Scale   │  ◄── Fixed-point conversion
+        └───────────────────────────────────┘
+                          │
+                          ▼
+        ┌───────────────────────────────────┐
+        │   Sliding Line Buffers (BRAM)     │  ◄── Neighborhood cache (no DDR stalls)
+        └───────────────────────────────────┘
+                          │
+                          ▼
+        ┌───────────────────────────────────┐
+        │   Parallel Gradient & Slope Core  │  ◄── Pipelined DSP arithmetic units
+        └───────────────────────────────────┘
+                          │
+                          ▼
+        ┌───────────────────────────────────┐
+        │    Dynamic Threshold & Filter     │  ◄── Elevation & delta-angle classification
+        └───────────────────────────────────┘
+                          │
+                          ▼
+        [Classified Stream: Ground / Non-Ground Tags]
